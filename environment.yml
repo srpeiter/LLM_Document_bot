@@ -1,0 +1,19 @@
+name: llm_ui_env
+
+dependencies:
+  - langchain
+  - numpy
+  - streamlit
+  - chromadb
+  - pytorch
+  - pip
+  - pip:
+      - faiss-cpu
+  - huggingface_hub
+  - sentence_transformers
+  - PyPDF2
+  - pre-commit
+  - python=3.11
+  - ruff
+  - black
+  - mypy
