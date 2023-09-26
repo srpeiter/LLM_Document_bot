@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "LLM_UI"
+description = " "
+readme = "README.md"
+authors = [
+    { name = "Sarwan Peiter", email = "sarwan.peiter@ictu.nl" }
+]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "langchain",
+    "numpy",
+    "streamlit",
+    "chromadb",
+    "pytorch",
+    "pytest",
+    "fais-cpu",
+    "sentence_transformers",
+    "PyPDF2",
+    "huggingface_hub",
+    "openai"
+]
+
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = ["pytest", "lorem"]
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.dynamic]
+version = { attr = "LLM_UI.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["LLM_UI", "LLM_UI.*"]
+
+[tool.setuptools.package-data]
+"LLM_UI" = ["py.typed"]
+
+#[project.urls]
+#Source = ""
+
+[tool.ruff]
+select = []
+ignore = []

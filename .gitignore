@@ -1,1 +1,13 @@
 .vscode
+
+.ruff_cache
+
+.pytest_cache
+
+LLM_UI.egg-info
+
+LLM_UI/__pycache__
+
+test/__pycache__
+
+.DS_Store

@@ -1,37 +1,48 @@
-from abc import ABC, abstractmethod
+from typing import Any, Dict, List
+
 from langchain.embeddings import HuggingFaceEmbeddings, OpenAIEmbeddings
-from langchain.vectorstores import FAISS
-from typing import List
-from langchain.vectorstores import Chroma
+from langchain.schema.embeddings import Embeddings
+from langchain.vectorstores import FAISS, Chroma
 
-_vector_store_type = {"faiss": FAISS, "chromadb": Chroma}
+from LLM_UI.custom_types import EmbedderInputTypes, EmbedderTypes, VSInputTypes, VSTypes
 
-_embedder_type = {"hugging_face": HuggingFaceEmbeddings, "open_ai": OpenAIEmbeddings}
+_vector_store_map: Dict[str, Any] = {"faiss": FAISS, "chroma_db": Chroma}
+
+_embedder_map: Dict[str, Any] = {
+    "hugging_face": HuggingFaceEmbeddings,
+    "open_ai": OpenAIEmbeddings,
+}
 
 
-class EmbedderStore(ABC):
-    @abstractmethod
-    def __init__(self, text: List[str]):
-        self._embedder = None
-        self._vector_store = None
+class VectorDB:
+    def __init__(
+        self,
+        text_chunks: List[str],
+        embedder_type: EmbedderInputTypes,
+        vs_type: VSInputTypes,
+        **kwargs,
+    ):
+        self._embedder: Embeddings
+        self._vector_store: VSTypes
+        self.embedder = embedder_type
+        self.vector_store = vs_type
+        self.db = self.vector_store.from_texts(text_chunks, embedding=self.embedder)
 
     @property
-    def embedder(self):
+    def embedder(self) -> Embeddings:
         return self._embedder
 
+    @embedder.setter
+    def embedder(self, type: EmbedderInputTypes):
+        self._embedder = _embedder_map[type]()
+
     @property
-    def vector_store(self):
+    def vector_store(self) -> VSTypes:
         return self._vector_store
 
-    @abstractmethod
-    def get_sim_vector(self, text_chunks: str):
-        ...
+    @vector_store.setter
+    def vector_store(self, type: VSInputTypes):
+        self._vector_store = _vector_store_map[type]
 
-
-class FAISStore(EmbedderStore):
-    def __init__(self, text_chunks: List[str]):
-        self._embedder = HuggingFaceEmbeddings()
-        self._vector_store = FAISS.from_texts(text_chunks, self._embedder)
-
-    def get_vectorstore(text_chunks: str):
-        return super().get_vectorstore()
+    def get_sim_vector(self, query: str):
+        return self.db.similarity_search(query=query)
