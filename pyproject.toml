@@ -17,7 +17,6 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = [
     "langchain",
-    "numpy",
     "streamlit",
     "chromadb",
     "pytorch",
@@ -27,7 +26,9 @@ dependencies = [
     "PyPDF2",
     "huggingface_hub",
     "openai",
-    "tiktoken"
+    "tiktoken",
+    "InstructorEmbedding",
+    "python-dotenv"
 ]
 
 dynamic = ["version"]

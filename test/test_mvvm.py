@@ -10,7 +10,8 @@ from LLM_UI.mvvm import UI_VM
 
 # ui_vm = UI_VM()
 curr_dir = Path(__file__).parents[1]
-data_path = curr_dir / "data" / "llm_paper.pdf"
+data_path1 = curr_dir / "data" / "llm_paper.pdf"
+data_path2 = curr_dir / "data" / "model_opgaaf.pdf"
 
 
 @pytest.fixture
@@ -25,7 +26,7 @@ def _init_ui_vm():
 @pytest.mark.dependency(name="a")
 def test_read_pdf(_init_ui_vm: UI_VM):
     ui_vm = _init_ui_vm
-    text: str = ui_vm._read_PDF(file=str(data_path))
+    text: str = ui_vm._read_PDF([str(data_path1), str(data_path2)])
 
     assert text != None and type(text) == str, print("error")
 
@@ -58,7 +59,7 @@ def test_init_text_db(_init_ui_vm: UI_VM):
 def embed_text(_init_ui_vm: UI_VM):
     ui_vm = _init_ui_vm
 
-    ui_vm.process(str(data_path))
+    ui_vm.process([str(data_path1), str(data_path2)])
 
     return ui_vm
 

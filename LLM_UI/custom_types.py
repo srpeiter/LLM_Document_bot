@@ -7,6 +7,7 @@ from langchain.vectorstores import Chroma
 
 class EmbedderInputTypes(str, Enum):
     hugging_face = "hugging_face"
+    hugging_face_instruct = "hugging_face_instruct"
     open_ai = "open_ai"
 
 

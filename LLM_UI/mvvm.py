@@ -1,7 +1,6 @@
-from itertools import chain
-from pathlib import Path
 from typing import List
 
+from dotenv import load_dotenv
 from langchain.chains.conversational_retrieval.base import (
     BaseConversationalRetrievalChain,
 )
@@ -35,8 +34,10 @@ class UI_VM(object):
             is_separator_regex=False,
         )
 
-    def process(self, file: str):
-        raw_text = self._read_PDF(file)
+        load_dotenv()
+
+    def process(self, files: List[str]):
+        raw_text = self._read_PDF(files)
 
         text_chunks = self._get_text_chunks(raw_text)
 
@@ -46,12 +47,12 @@ class UI_VM(object):
 
         self.llm_conv_chain = chain_factory(self.llm_name, self.vector_db)
 
-    def _read_PDF(self, file: str):
-        pdf = PdfReader(file)
-
-        text: str = ""
-        for page in pdf.pages:
-            text += page.extract_text()
+    def _read_PDF(self, files: List[str]):
+        text = ""
+        for file in files:
+            pdf = PdfReader(file)
+            for page in pdf.pages:
+                text += page.extract_text()
         return text
 
     def _get_text_chunks(self, text: str):

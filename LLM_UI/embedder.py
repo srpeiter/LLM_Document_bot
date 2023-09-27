@@ -1,6 +1,10 @@
 from typing import Any, Dict, List
 
-from langchain.embeddings import HuggingFaceEmbeddings, OpenAIEmbeddings
+from langchain.embeddings import (
+    HuggingFaceEmbeddings,
+    HuggingFaceInstructEmbeddings,
+    OpenAIEmbeddings,
+)
 from langchain.schema.embeddings import Embeddings
 from langchain.vectorstores import FAISS, Chroma
 
@@ -10,6 +14,7 @@ _vector_store_map: Dict[str, Any] = {"faiss": FAISS, "chroma_db": Chroma}
 
 _embedder_map: Dict[str, Any] = {
     "hugging_face": HuggingFaceEmbeddings,
+    "hugging_face_instruct": HuggingFaceInstructEmbeddings,
     "open_ai": OpenAIEmbeddings,
 }
 

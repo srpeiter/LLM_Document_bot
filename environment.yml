@@ -2,20 +2,21 @@ name: llm_ui_env
 
 dependencies:
   - langchain
-  - numpy
   - streamlit
   - chromadb
   - pytorch
   - openai
   - tiktoken
-  - pytest
+  - python-dotenv
+  - lorem
+  - PyPDF2
+  - huggingface_hub
   - pip
   - pip:
       - faiss-cpu
       - sentence_transformers
-  - huggingface_hub
-  - lorem
-  - PyPDF2
+      - InstructorEmbedding
+  - pytest
   - pre-commit
   - python=3.11
   - ruff
