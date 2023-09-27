@@ -26,7 +26,8 @@ dependencies = [
     "sentence_transformers",
     "PyPDF2",
     "huggingface_hub",
-    "openai"
+    "openai",
+    "tiktoken"
 ]
 
 dynamic = ["version"]

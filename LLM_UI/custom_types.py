@@ -1,8 +1,7 @@
 from enum import Enum
-from typing import Type, Union
+from typing import Union
 
 from langchain import FAISS
-from langchain.embeddings import HuggingFaceEmbeddings, OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 
 
@@ -16,5 +15,11 @@ class VSInputTypes(str, Enum):
     chroma_db = "chroma_db"
 
 
+class LLMName(str, Enum):
+    hugging_face_hub = "hugging_face_hub"
+    llama_cpp = "llama_cpp"
+    open_ai = "open_ai"
+    chat_open_ai = "chat_open_ai"
+
+
 VSTypes = Union[FAISS, Chroma]
-EmbedderTypes = Union[HuggingFaceEmbeddings, OpenAIEmbeddings]

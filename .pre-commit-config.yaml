@@ -9,13 +9,14 @@ repos:
       - id: check-toml
       - id: check-merge-conflict
       - id: check-added-large-files
-        args: ["--maxkb=3000"]
+        args: [--maxkb=3000]
       - id: check-merge-conflict
       - id: trailing-whitespace
   - repo: https://github.com/psf/black
     rev: 23.9.1
     hooks:
       - id: black
+        args: [--skip-string-normalization]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.0.291
     hooks:

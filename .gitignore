@@ -11,3 +11,7 @@ LLM_UI/__pycache__
 test/__pycache__
 
 .DS_Store
+
+.env
+
+__pycache__
