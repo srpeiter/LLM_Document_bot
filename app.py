@@ -11,7 +11,7 @@ ui_vm_openai_faiss = UI_VM(
 )
 
 ui_vm_openai_chroma_db = UI_VM(
-    LLMName.chat_open_ai, EmbedderInputTypes.hugging_face_instruct, VSInputTypes.faiss
+    LLMName.chat_open_ai, EmbedderInputTypes.hugging_face, VSInputTypes.faiss
 )
 
 
