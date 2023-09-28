@@ -16,11 +16,16 @@ data_path2 = curr_dir / "data" / "model_opgaaf.pdf"
 
 @pytest.fixture
 def _init_ui_vm():
+    params_embedder = {
+        "model_name": 'sentence-transformers/all-mpnet-base-v2',
+        "model_kwargs": {'device': 'cpu'},
+        "encode_kwargs": {'normalize_embeddings': False},
+    }
     embedder_name = EmbedderInputTypes.hugging_face
     vs_name = VSInputTypes.faiss
     llm_name = LLMName.chat_open_ai
 
-    return UI_VM(llm_name, embedder_name, vs_name)
+    return UI_VM(llm_name, embedder_name, vs_name, params_embedder=params_embedder)
 
 
 @pytest.mark.dependency(name="a")
@@ -46,12 +51,20 @@ def test_init_text_db(_init_ui_vm: UI_VM):
     ui_vm = _init_ui_vm
     text_chunks: List[str] = [lm.paragraph() for _ in range(5)]
 
-    embedder_name = EmbedderInputTypes.open_ai
+    params_embedder = {
+        "model_name": 'sentence-transformers/all-mpnet-base-v2',
+        "model_kwargs": {'device': 'cpu'},
+        "encode_kwargs": {'normalize_embeddings': False},
+    }
+    embedder_name = EmbedderInputTypes.hugging_face
     vs_name = VSInputTypes.faiss
-    vector_db = ui_vm._init_text_db(text_chunks, embedder_name, vs_name)
+
+    vector_db = ui_vm._init_text_db(
+        text_chunks, embedder_name, vs_name, params_embedder=params_embedder
+    )
 
     assert isinstance(vector_db.get_db, _vector_store_map[vs_name]) and isinstance(
-        vector_db.embedder, _embedder_map[embedder_name]
+        vector_db.get_embedder(), _embedder_map[embedder_name]
     )
 
 

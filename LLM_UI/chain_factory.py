@@ -20,6 +20,8 @@ def chain_factory(llm_name: LLMName, vector_db: VectorDB, **kwargs):
     llm = llm_map[llm_name](**kwargs)
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
-        llm=llm, retriever=vector_db.get_db.as_retriever(), memory=memory
+        llm=llm,
+        retriever=vector_db.get_db.as_retriever(),
+        memory=memory,
     )
     return conversation_chain

@@ -17,5 +17,5 @@ def test_vector_db_init():
     )
 
     assert isinstance(vector_db.get_db, _vector_store_map[vs_name]) and isinstance(
-        vector_db.embedder, _embedder_map[embedder_name]
+        vector_db.get_embedder(), _embedder_map[embedder_name]
     )

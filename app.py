@@ -6,8 +6,14 @@ from LLM_UI.custom_types import EmbedderInputTypes, LLMName, VSInputTypes
 from LLM_UI.mvvm import UI_VM
 from templates.html_template import bot_template, css, user_template
 
+params_llama = {"model_path": '', "n_ctx": 23, "n_threads": 16, "n_gpu_layers": 20}
+
+
 ui_vm_openai_faiss = UI_VM(
-    LLMName.chat_open_ai, EmbedderInputTypes.open_ai, VSInputTypes.faiss
+    LLMName.chat_open_ai,
+    EmbedderInputTypes.hugging_face,
+    VSInputTypes.faiss,
+    params_embedder=params_llama,
 )
 
 ui_vm_openai_chroma_db = UI_VM(

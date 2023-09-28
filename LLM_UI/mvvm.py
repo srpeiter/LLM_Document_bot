@@ -1,4 +1,4 @@
-from typing import List
+from typing import Any, Dict, List
 
 from dotenv import load_dotenv
 from langchain.chains.conversational_retrieval.base import (
@@ -18,7 +18,12 @@ class UI_VM(object):
         llm_name: LLMName,
         embedder_name: EmbedderInputTypes,
         vector_store_name: VSInputTypes,
+        **kwargs,
     ):
+        self.params_embedder: Dict[str, Any] = kwargs.get("params_embedder", {})
+        self.params_vector_store: Dict[str, Any] = kwargs.get("params_vector_store", {})
+        self.params_llm: Dict[str, Any] = kwargs.get("params_llm", {})
+
         self.llm_name = llm_name
         self.embedder_name = embedder_name
         self.vector_store_name = vector_store_name
@@ -42,10 +47,16 @@ class UI_VM(object):
         text_chunks = self._get_text_chunks(raw_text)
 
         self.vector_db = self._init_text_db(
-            text_chunks, self.embedder_name, self.vector_store_name
+            text_chunks,
+            self.embedder_name,
+            self.vector_store_name,
+            params_embedder=self.params_embedder,
+            params_vector_store=self.params_vector_store,
         )
 
-        self.llm_conv_chain = chain_factory(self.llm_name, self.vector_db)
+        self.llm_conv_chain = chain_factory(
+            self.llm_name, self.vector_db, **self.params_llm
+        )
 
     def _read_PDF(self, files: List[str]):
         text = ""
@@ -63,9 +74,13 @@ class UI_VM(object):
         text_chunks: List[str],
         embedder_type: EmbedderInputTypes,
         vs_type: VSInputTypes,
+        **kwargs,
     ):
         return VectorDB(
-            text_chunks=text_chunks, embedder_type=embedder_type, vs_type=vs_type
+            text_chunks=text_chunks,
+            embedder_type=embedder_type,
+            vs_type=vs_type,
+            **kwargs,
         )
 
     def handle_user_input(self, user_question: str):

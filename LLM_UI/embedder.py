@@ -27,19 +27,21 @@ class VectorDB:
         vs_type: VSInputTypes,
         **kwargs,
     ):
+        self.params_embedder: Dict[str, Any] = kwargs.get("params_embedder", {})
+        self.params_vector_store: Dict[str, Any] = kwargs.get("params_vector_store", {})
         self._embedder: Embeddings
         self._vector_store: VSTypes
-        self.embedder = embedder_type
+        self.init_embedder(embedder_type, **self.params_embedder)
         self.vector_store = vs_type
-        self._db = self.vector_store.from_texts(text_chunks, embedding=self.embedder)
+        self._db = self.vector_store.from_texts(
+            text_chunks, embedding=self.get_embedder(), **self.params_vector_store
+        )
 
-    @property
-    def embedder(self) -> Embeddings:
+    def get_embedder(self) -> Embeddings:
         return self._embedder
 
-    @embedder.setter
-    def embedder(self, type: EmbedderInputTypes):
-        self._embedder = _embedder_map[type]()
+    def init_embedder(self, type: EmbedderInputTypes, **kwargs):
+        self._embedder = _embedder_map[type](**kwargs)
 
     @property
     def vector_store(self) -> VSTypes:
