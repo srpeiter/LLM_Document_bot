@@ -6,18 +6,30 @@ from LLM_UI.custom_types import EmbedderInputTypes, LLMName, VSInputTypes
 from LLM_UI.mvvm import UI_VM
 from templates.html_template import bot_template, css, user_template
 
-params_llama = {"model_path": '', "n_ctx": 23, "n_threads": 16, "n_gpu_layers": 20}
+params_llama = {
+    "model_path": '/home/sar/Documents/LLama/llama.cpp/models/13B/ggml-model-q8_0.gguf',
+    "n_ctx": 2048,
+    "n_batch": 512,
+    "n_threads": 8,
+    "n_gpu_layers": 20,
+    "temperature": 0.7,
+    "seed": 2334242,
+    "max_tokens": 200,
+    "repeat_penalty": 1.18,
+    "top_p": 0.1,
+    "top_k": 40,
+}
 
 
 ui_vm_openai_faiss = UI_VM(
-    LLMName.chat_open_ai,
-    EmbedderInputTypes.hugging_face,
-    VSInputTypes.faiss,
-    params_embedder=params_llama,
+    LLMName.chat_open_ai, EmbedderInputTypes.open_ai, VSInputTypes.faiss
 )
 
-ui_vm_openai_chroma_db = UI_VM(
-    LLMName.chat_open_ai, EmbedderInputTypes.hugging_face, VSInputTypes.faiss
+ui_vm_llama_faiss = UI_VM(
+    LLMName.llama_cpp,
+    EmbedderInputTypes.open_ai,
+    VSInputTypes.faiss,
+    params_llm=params_llama,
 )
 
 
@@ -52,10 +64,10 @@ def main():
         if st.button("Process"):
             with st.spinner("Processing"):
                 ui_vm_openai_faiss.process(cast(List[str], pdf_docs))
-                ui_vm_openai_chroma_db.process(cast(List[str], pdf_docs))
+                ui_vm_llama_faiss.process(cast(List[str], pdf_docs))
 
                 st.session_state.model1 = ui_vm_openai_faiss
-                st.session_state.model2 = ui_vm_openai_chroma_db
+                st.session_state.model2 = ui_vm_llama_faiss
 
     box_1, box_2 = st.columns(spec=2, gap="large")
     user_question = st.chat_input(
@@ -72,7 +84,7 @@ def main():
             write_to_output(chat_history)
 
         with box_2:
-            st.subheader("Chat with OpenAI")
+            st.subheader("Chat with Llama")
             chat_history = response_model2["chat_history"]
             write_to_output(chat_history)
 

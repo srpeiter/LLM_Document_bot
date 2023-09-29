@@ -33,8 +33,8 @@ class UI_VM(object):
 
         self.text_splitter = CharacterTextSplitter(
             separator="\n",
-            chunk_size=1000,
-            chunk_overlap=200,
+            chunk_size=400,
+            chunk_overlap=100,
             length_function=len,
             is_separator_regex=False,
         )
