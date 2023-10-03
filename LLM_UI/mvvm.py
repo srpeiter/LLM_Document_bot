@@ -23,6 +23,9 @@ class UI_VM(object):
         self.params_embedder: Dict[str, Any] = kwargs.get("params_embedder", {})
         self.params_vector_store: Dict[str, Any] = kwargs.get("params_vector_store", {})
         self.params_llm: Dict[str, Any] = kwargs.get("params_llm", {})
+        self.params_text_splitter: Dict[str, Any] = kwargs.get(
+            "params_text_splitter", {}
+        )
 
         self.llm_name = llm_name
         self.embedder_name = embedder_name
@@ -31,13 +34,14 @@ class UI_VM(object):
         self.vector_db: VectorDB
         self.llm_conv_chain: BaseConversationalRetrievalChain
 
-        self.text_splitter = CharacterTextSplitter(
-            separator="\n",
-            chunk_size=1000,
-            chunk_overlap=200,
-            length_function=len,
-            is_separator_regex=False,
-        )
+        if self.params_text_splitter is not None:
+            self.text_splitter = CharacterTextSplitter(
+                separator="\n",
+                chunk_size=self.params_text_splitter.get("chunk_size", 1000),
+                chunk_overlap=self.params_text_splitter.get("chunk_overlap", 200),
+                length_function=len,
+                is_separator_regex=False,
+            )
 
         load_dotenv()
 
