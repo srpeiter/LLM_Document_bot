@@ -21,11 +21,19 @@ def _init_ui_vm():
         "model_kwargs": {'device': 'cpu'},
         "encode_kwargs": {'normalize_embeddings': False},
     }
+
+    params_llm = {"streaming": True}
     embedder_name = EmbedderInputTypes.hugging_face
     vs_name = VSInputTypes.faiss
     llm_name = LLMName.chat_open_ai
 
-    return UI_VM(llm_name, embedder_name, vs_name, params_embedder=params_embedder)
+    return UI_VM(
+        llm_name,
+        embedder_name,
+        vs_name,
+        params_embedder=params_embedder,
+        params_llm=params_llm,
+    )
 
 
 @pytest.mark.dependency(name="a")
@@ -82,5 +90,5 @@ def test_handle_user_input(embed_text: UI_VM):
 
     user_question = "Give me a summary of the text"
     response = ui_vm.handle_user_input(user_question)
-
+    print(response["answer"])
     assert isinstance(response["answer"], str) and len(response["answer"]) > 0
