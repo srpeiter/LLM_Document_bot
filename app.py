@@ -21,16 +21,6 @@ params_llama = {
 }
 
 
-ui_vm_openai_faiss = UI_VM(
-    LLMName.chat_open_ai, EmbedderInputTypes.open_ai, VSInputTypes.faiss
-)
-
-ui_vm_llama_faiss = UI_VM(
-    LLMName.llama_cpp,
-    EmbedderInputTypes.open_ai,
-    VSInputTypes.faiss,
-    params_llm=params_llama,
-)
 # params_llama = {"model_path": '', "n_ctx": 23, "n_threads": 16, "n_gpu_layers": 20}
 params_text_splitter = {"chunk_size": 1000, "chunk_overlap": 200}
 
@@ -46,10 +36,6 @@ def write_to_output(chat_history: List[Any]):
             st.write(
                 bot_template.replace("{{MSG}}", message.content), unsafe_allow_html=True
             )
-
-
-def set_params_text_splitter(param_name: str, val: int):
-    params_text_splitter[param_name] = val
 
 
 def main():
@@ -82,7 +68,7 @@ def main():
             params_text_splitter['chunk_size'] = int(chunk_size)
 
         if chunk_overlap:
-            params_text_splitter['over_lap'] = int(chunk_overlap)
+            params_text_splitter['chunk_overlap'] = int(chunk_overlap)
 
         if st.button("Process"):
             with st.spinner("Processing"):
@@ -90,14 +76,14 @@ def main():
                     LLMName.chat_open_ai,
                     EmbedderInputTypes.open_ai,
                     VSInputTypes.faiss,
-                    params_embedder=params_llama,
                     params_text_splitter=params_text_splitter,
                 )
 
-                ui_vm_openai_chroma_db = UI_VM(
+                ui_vm_llama_faiss = UI_VM(
                     LLMName.chat_open_ai,
                     EmbedderInputTypes.open_ai,
                     VSInputTypes.faiss,
+                    params_llama=params_llama,
                     params_text_splitter=params_text_splitter,
                 )
 
