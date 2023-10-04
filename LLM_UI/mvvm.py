@@ -88,4 +88,4 @@ class UI_VM(object):
         )
 
     def handle_user_input(self, user_question: str):
-        return self.llm_conv_chain({"question": user_question})
+        return self.llm_conv_chain({"question": user_question, "chat_history": []})

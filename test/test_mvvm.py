@@ -11,7 +11,7 @@ from LLM_UI.mvvm import UI_VM
 # ui_vm = UI_VM()
 curr_dir = Path(__file__).parents[1]
 data_path1 = curr_dir / "data" / "llm_paper.pdf"
-data_path2 = curr_dir / "data" / "model_opgaaf.pdf"
+data_path2 = curr_dir / "data" / "2pager_thrive.pdf"
 
 
 @pytest.fixture
@@ -88,7 +88,7 @@ def embed_text(_init_ui_vm: UI_VM):
 def test_handle_user_input(embed_text: UI_VM):
     ui_vm = embed_text
 
-    user_question = "Give me a summary of the text"
+    user_question = "who are the party with interest in the circular healthcare project"
     response = ui_vm.handle_user_input(user_question)
-    print(response["answer"])
+
     assert isinstance(response["answer"], str) and len(response["answer"]) > 0

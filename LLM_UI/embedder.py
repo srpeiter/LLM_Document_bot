@@ -56,4 +56,6 @@ class VectorDB:
         return self._db
 
     def get_sim_vector(self, query: str):
-        return self._db.similarity_search(query=query)
+        return self._db.similarity_search(
+            query=query,
+        )
