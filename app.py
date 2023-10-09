@@ -31,24 +31,24 @@ class StreamHandler(BaseCallbackHandler):
         self.text = ""
 
 
-params_llama = {
-    "model_path": '/home/sar/Documents/LLama/llama.cpp/models/13B/ggml-model-q8_0.gguf',
-    "n_ctx": 2048,
-    "n_batch": 512,
-    "n_threads": 8,
-    "n_gpu_layers": 20,
-    "temperature": 0.7,
-    "seed": 2334242,
-    "max_tokens": 256,
-    "repeat_penalty": 1.2,
-    "top_p": 0.1,
-    "top_k": 40,
-    "streaming": True,
-    "callbacks": None,
-}
+# params_llama = {
+#     "model_path": '/home/sar/Documents/LLama/llama.cpp/models/13B/ggml-model-q8_0.gguf',
+#     "n_ctx": 2048,
+#     "n_batch": 512,
+#     "n_threads": 8,
+#     "n_gpu_layers": 20,
+#     "temperature": 0.7,
+#     "seed": 2334242,
+#     "max_tokens": 256,
+#     "repeat_penalty": 1.2,
+#     "top_p": 0.1,
+#     "top_k": 40,
+#     "streaming": True,
+#     "callbacks": None,
+# }
 
 params_open_ai = {'streaming': True, 'callbacks': None}
-# params_llama = {'streaming': True, 'callbacks': None}
+params_llama = {'streaming': True, 'callbacks': None}
 params_text_splitter = {"chunk_size": 500, "chunk_overlap": 75}
 
 
@@ -112,7 +112,7 @@ def main():
                 )
 
                 ui_vm_llama_faiss = UI_VM(
-                    LLMName.llama_cpp,
+                    LLMName.chat_open_ai,
                     EmbedderInputTypes.open_ai,
                     VSInputTypes.faiss,
                     params_llm=params_llama,
